@@ -2,13 +2,19 @@ DROP DATABASE IF EXISTS SpotifyClone;
 
 CREATE DATABASE SpotifyClone;
 
-CREATE TABLE SpotifyClone.user (
+CREATE TABLE SpotifyClone.subscriptions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  subscription_type VARCHAR(20) NOT NULL,
+  subscription_value INT NOT NULL
+);
+
+CREATE TABLE SpotifyClone.users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(30) NOT NULL,
   user_age INT,
-  subscription_type VARCHAR(30) NOT NULL,
-  subscription_date DATE NOT NULL,
-  subscription_value INT NOT NULL
+  subscription_id INT NOT NULL,
+  FOREIGN KEY (subscription_id) REFERENCES SpotifyClone.subscriptions (id),
+  subscription_date DATE NOT NULL
 );
 
 CREATE TABLE SpotifyClone.artist (
@@ -35,35 +41,46 @@ CREATE TABLE SpotifyClone.songs (
 CREATE TABLE SpotifyClone.history (
   song_id INT NOT NULL,
   user_id INT NOT NULL,
+  PRIMARY KEY(song_id, user_id),
   FOREIGN KEY (song_id) REFERENCES SpotifyClone.songs (id),
-  FOREIGN KEY (user_id) REFERENCES SpotifyClone.user (id),
+  FOREIGN KEY (user_id) REFERENCES SpotifyClone.users (id),
   reproduction_date DATETIME NOT NULL
 );
 
 CREATE TABLE SpotifyClone.following (
   user_id INT NOT NULL,
   artist_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES SpotifyClone.user (id),
+  PRIMARY KEY (user_id, artist_id),
+  FOREIGN KEY (user_id) REFERENCES SpotifyClone.users (id),
   FOREIGN KEY (artist_id) REFERENCES SpotifyClone.artist (id)
 );
 
-INSERT INTO SpotifyClone.user (
-  username,
-  user_age,
+INSERT INTO SpotifyClone.subscriptions (
   subscription_type,
-  subscription_date,
   subscription_value
 ) VALUES 
-('Thati', 23, 'gratuito', '2019-10-20', 0),
-('Cintia', 35, 'familiar', '2017-12-30', 799),
-('Bill', 20, 'universitário', '2019-06-05', 599),
-('Roger', 45, 'pessoal', '2020-05-13', 699),
-('Norman', 58, 'pessoal', '2017-02-17', 699),
-('Patrick', 33, 'familiar', '2017-01-06', 799),
-('Vivian', 26, 'universitário', '2018-01-05', 599),
-('Carol', 19, 'universitário', '2018-02-14', 599),
-('Angelina', 42, 'familiar', '2018-04-29', 799),
-('Paul', 46, 'familiar', '2017-01-17', 799);
+('gratuito', 0),
+('familiar', 799),
+('universitário', 599),
+('pessoal', 699);
+
+
+INSERT INTO SpotifyClone.users (
+  username,
+  user_age,
+  subscription_id,
+  subscription_date
+) VALUES 
+('Thati', 23, 1, '2019-10-20'),
+('Cintia', 35, 2, '2017-12-30'),
+('Bill', 20, 3, '2019-06-05'),
+('Roger', 45, 4, '2020-05-13'),
+('Norman', 58, 4, '2017-02-17'),
+('Patrick', 33, 2, '2017-01-06'),
+('Vivian', 26, 3, '2018-01-05'),
+('Carol', 19, 3, '2018-02-14'),
+('Angelina', 42, 2, '2018-04-29'),
+('Paul', 46, 2, '2017-01-17');
 
 INSERT INTO SpotifyClone.artist (
   artist_name
@@ -151,6 +168,7 @@ INSERT INTO SpotifyClone.history (
 (6, 2, '2020-01-02 07:40:33'),
 (7, 2, '2020-05-16 06:16:22'),
 (8, 2, '2020-10-09 12:27:48'),
+(8, 10, '2017-04-12 05:33:43'),
 (9, 2, '2020-09-21 13:14:46'),
 (9, 8, '2018-03-21 16:56:40'),
 (10, 3, '2020-11-13 16:55:13'),
@@ -162,6 +180,7 @@ INSERT INTO SpotifyClone.history (
 (16, 5, '2020-07-03 19:33:28'),
 (17, 5, '2017-02-24 21:14:22'),
 (17, 10, '2017-07-27 05:24:49'),
+(18, 5, '2020-10-11 13:52:27'),
 (19, 6, '2019-02-07 20:33:48'),
 (20, 6, '2017-01-24 00:31:17'),
 (21, 6, '2017-10-12 12:35:20'),
