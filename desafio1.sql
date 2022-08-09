@@ -59,10 +59,10 @@ INSERT INTO SpotifyClone.subscriptions (
   subscription_type,
   subscription_value
 ) VALUES 
-('gratuito', 0),
-('familiar', 799),
-('universitário', 599),
-('pessoal', 699);
+('gratuito', 0.00),
+('familiar', 7.99),
+('universitário', 5.99),
+('pessoal', 6.99);
 
 
 INSERT INTO SpotifyClone.users (
