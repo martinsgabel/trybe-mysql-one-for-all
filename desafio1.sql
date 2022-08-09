@@ -5,7 +5,7 @@ CREATE DATABASE SpotifyClone;
 CREATE TABLE SpotifyClone.subscriptions (
   id INT PRIMARY KEY AUTO_INCREMENT,
   subscription_type VARCHAR(20) NOT NULL,
-  subscription_value INT NOT NULL
+  subscription_value DECIMAL(13, 2) NOT NULL
 );
 
 CREATE TABLE SpotifyClone.users (
